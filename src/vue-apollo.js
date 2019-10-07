@@ -24,12 +24,12 @@ const defaultOptions = {
   // Use `null` to disable subscriptions
   // wsEndpoint: null //process.env.VUE_APP_GRAPHQL_WS || 'ws://localhost:4000/graphql',
   // LocalStorage token
-  // tokenName: AUTH_TOKEN,
+  tokenName: AUTH_TOKEN,
   // Enable Automatic Query persisting with Apollo Engine
   persisting: false,
   // Use websockets for everything (no HTTP)
   // You need to pass a `wsEndpoint` for this to work
-  websocketsOnly: false
+  websocketsOnly: false,
   // Is being rendered on the server?
   // ssr: false,
 
@@ -42,7 +42,10 @@ const defaultOptions = {
   // cache: myCache
 
   // Override the way the Authorization header is set
-  // getAuth: (tokenName) => ...
+  getAuth: (tokenName) => {
+    const token = localStorage.getItem(tokenName)
+    return token || ''
+  }
 
   // Additional ApolloClient options
   // apollo: { ... }
@@ -65,7 +68,7 @@ export function createProvider(options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        // fetchPolicy: 'cache-and-network',
+        // fetchPolicy: 'cache-and-network'
       }
     },
     errorHandler(error) {
